@@ -1,0 +1,82 @@
+create database loja;
+use loja;
+
+create table funcionarios (
+idfuncionarios int primary key auto_increment,
+nome varchar(255),
+telefone varchar(255),
+datanascimento date ,
+salario double ,
+qtdFilhos int
+);
+
+
+
+create table funcionarios (
+idfuncionarios int primary key auto_increment,
+nome varchar(255),
+telefone varchar(255),
+datanascimento date ,
+salario double 
+);
+
+
+INSERT INTO funcionarios VALUES (null,'João Silva', '(11) 9999-1234', '1985-03-15', 5000.00, 2);
+
+INSERT INTO funcionarios VALUES (null,'Paulo Silva', '(11) 9999-1234', '2001-03-15', 3000.00, 2);
+
+INSERT INTO funcionarios VALUES (null,'Jose Silva', '(11) 9999-1234', '1999-12-20', 2000.00, 3);
+
+INSERT INTO funcionarios VALUES (null,'Maria Santos', '(21) 9876-5432', '1990-08-20', 6200.00, 1);
+
+INSERT INTO funcionarios VALUES (null,'Pedro Oliveira', '(31) 5555-7890', '1988-11-10', 4800.00, 0);
+
+
+/*GROUP BY*/
+
+SELECT qtdFilhos, AVG(salario) AS salario_medio
+FROM funcionarios
+GROUP BY qtdFilhos;
+
+/*
+Essa consulta agrupa os funcionários pelo número de filhos (qtdFilhos) 
+e calcula o salário médio para cada grupo.
+*/
+
+
+/*HAVING*/
+
+SELECT qtdFilhos, AVG(salario) AS salario_medio
+FROM funcionarios
+GROUP BY qtdFilhos
+HAVING AVG(salario) < 8000;
+
+
+/*
+Essa consulta agrupa os funcionários pelo número de filhos (qtdFilhos) e 
+calcula o salário médio para cada grupo, mas apenas inclui os grupos com um 
+salário médio maior que 5000.
+*/
+
+
+
+/*ORDER BY*/
+
+SELECT *
+FROM funcionarios
+ORDER BY salario DESC, nome ASC;
+
+
+/*
+Essa consulta ordena os funcionários pelo salário em ordem decrescente e, 
+em seguida, pelo nome em ordem ascendente.
+*/
+
+
+/*LIKE*/
+
+SELECT *
+FROM funcionarios
+WHERE nome LIKE '%Silva%';
+
+/*Essa consulta busca funcionários com o nome contendo a string 'Silva'.*/

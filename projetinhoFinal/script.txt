@@ -1,0 +1,228 @@
+create database teste ;
+use teste;
+drop database teste;
+
+
+CREATE TABLE conta (
+  idconta int(11) primary key auto_increment,
+  tipoConta enum('carteira','contaCorrente','contaPoupanca','instituicaoFinaceira') DEFAULT NULL,
+  saldo double(10,2) DEFAULT NULL
+);
+select * from vw_contas ;
+
+call adicionar_conta ('carteira', 0);
+
+
+CREATE TABLE despesa (
+  iddespesa int(11) primary key auto_increment,
+  valor double(10,2) DEFAULT NULL,
+  dataPagamento date DEFAULT NULL,
+  dataPagamentoEsperado date DEFAULT NULL,
+  tipoDespesa enum('alimentacao','educacao','lazer','moradia','roupa','saude','transporte','outros') DEFAULT NULL,
+  fk_conta int(11) ,
+  foreign key (fk_conta)
+  references conta (idconta)
+);
+
+call adicionar_despesa(1000,'2023-12-30','2023-12-30','moradia',1);
+
+CREATE TABLE receita (
+  idreceita int(11) primary key auto_increment,
+  valor double(10,2) DEFAULT NULL,
+  dataRecebimento date DEFAULT NULL,
+  dataRecebimentoEsperado date DEFAULT NULL,
+  descricao varchar(300) DEFAULT NULL,
+  tipoReceita enum('salario','presente','premio','outros') DEFAULT NULL,
+  fk_conta int(11) DEFAULT NULL,
+  foreign key (fk_conta)
+  references conta (idconta)
+);
+
+call adicionar_receita(2000,'2023-12-30','2023-12-30',"salario que veio da empresa",'salario',1);
+
+CREATE TABLE transferencia (
+  valorTranferencia double DEFAULT NULL,
+  fk_conta_envia int(11) DEFAULT NULL,
+  foreign key (fk_conta_envia)
+  references conta (idconta),
+  fk_conta_recebe int(11) DEFAULT NULL,
+  foreign key (fk_conta_recebe)
+  references conta (idconta)
+); 
+
+call adicionar_transferencia(500,1,2);
+
+
+//Triggers
+
+DELIMITER $$
+CREATE TRIGGER `ADICIONA_SALDO` AFTER INSERT ON `RECEITA` FOR EACH ROW BEGIN
+	
+	
+	UPDATE conta SET saldo = saldo + new.valor WHERE idconta = new.fk_conta;
+	
+end
+$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE TRIGGER `REMOVE_SALDO` AFTER INSERT ON `DESPESA` FOR EACH ROW BEGIN
+	DECLARE SALDOCONTA REAL;
+	SELECT saldo INTO SALDOCONTA
+    FROM conta
+    WHERE idconta = NEW.fk_conta;
+	
+    IF SALDOCONTA - NEW.valor < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Saldo insuficiente para realizar a transferência';
+    ELSE
+
+	UPDATE conta SET saldo = saldo - new.valor WHERE idconta = new.fk_conta;
+	end if;
+end
+$$
+DELIMITER ;
+
+
+drop trigger TRI_TRANSFERENCIA;
+DELIMITER $$
+CREATE TRIGGER `TRI_TRANSFERENCIA` AFTER INSERT ON `TRANSFERENCIA` FOR EACH ROW BEGIN
+    DECLARE SALDOCONTA REAL;
+	
+    SELECT saldo INTO SALDOCONTA
+    FROM conta
+    WHERE idconta = NEW.fk_conta_envia;
+	
+    IF SALDOCONTA - NEW.valorTranferencia < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Saldo insuficiente para realizar a transferência';
+    ELSE
+        
+        UPDATE conta SET saldo = saldo - NEW.valorTranferencia WHERE idconta = NEW.fk_conta_envia;
+
+        UPDATE conta SET saldo = saldo + NEW.valorTranferencia WHERE idconta = new.fk_conta_recebe;
+
+    END IF;
+
+end
+$$
+DELIMITER ;
+
+
+
+
+//PROCEDURES
+
+
+DELIMITER //
+
+CREATE PROCEDURE adicionar_conta(
+    IN p_tipoConta ENUM('carteira','contaCorrente','contaPoupanca','instituicaoFinaceira'),
+    IN p_saldo DOUBLE(10,2)
+)
+BEGIN
+    INSERT INTO conta (tipoConta, saldo) VALUES (p_tipoConta, p_saldo);
+END //
+
+DELIMITER ;
+
+
+
+DELIMITER //
+
+CREATE PROCEDURE adicionar_despesa (
+    IN p_valor DOUBLE(10,2),
+    IN p_dataPagamento DATE,
+    IN p_dataPagamentoEsperado DATE,
+    IN p_tipoDespesa ENUM('alimentacao', 'educacao', 'lazer', 'moradia', 'roupa', 'saude', 'transporte', 'outros'),
+    IN p_fk_conta INT
+)
+BEGIN
+    INSERT INTO despesa (valor, dataPagamento, dataPagamentoEsperado, tipoDespesa, fk_conta)
+    VALUES (p_valor, p_dataPagamento, p_dataPagamentoEsperado, p_tipoDespesa, p_fk_conta);
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE adicionar_receita (
+    IN p_valor DOUBLE(10,2),
+    IN p_dataRecebimento DATE,
+    IN p_dataRecebimentoEsperado DATE,
+    IN p_descricao VARCHAR(300),
+    IN p_tipoReceita ENUM('salario', 'presente', 'premio', 'outros'),
+    IN p_fk_conta INT
+)
+BEGIN
+    INSERT INTO receita (valor, dataRecebimento, dataRecebimentoEsperado, descricao, tipoReceita, fk_conta)
+    VALUES (p_valor, p_dataRecebimento, p_dataRecebimentoEsperado, p_descricao, p_tipoReceita, p_fk_conta);
+END //
+
+DELIMITER ;
+
+
+DELIMITER //
+
+CREATE PROCEDURE adicionar_transferencia (
+    IN p_valorTransferencia DOUBLE,
+    IN p_fk_conta_envia INT,
+    IN p_fk_conta_recebe INT
+)
+BEGIN
+    INSERT INTO transferencia (valorTranferencia, fk_conta_envia, fk_conta_recebe)
+    VALUES (p_valorTransferencia, p_fk_conta_envia, p_fk_conta_recebe);
+END //
+
+DELIMITER ;
+
+
+
+
+
+//VIEWS;
+
+CREATE VIEW vw_contas AS
+SELECT 
+    idconta,
+    tipoConta,
+    saldo
+FROM 
+    conta;
+
+
+CREATE VIEW vw_despesas AS
+SELECT 
+    iddespesa,
+    valor,
+    dataPagamento,
+    dataPagamentoEsperado,
+    tipoDespesa,
+    fk_conta
+FROM 
+    despesa;    
+
+
+
+CREATE VIEW vw_receitas AS
+SELECT 
+    idreceita,
+    valor,
+    dataRecebimento,
+    dataRecebimentoEsperado,
+    descricao,
+    tipoReceita,
+    fk_conta
+FROM 
+    receita;    
+
+
+CREATE VIEW vw_transferencias AS
+SELECT 
+    valorTranferencia,
+    fk_conta_envia,
+    fk_conta_recebe
+FROM 
+    transferencia;    

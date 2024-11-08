@@ -1,0 +1,104 @@
+Relacionamento entre tabelas
+
+O relacionamento entre tabelas é uma forma de estabelecer uma conexão lógica entre duas ou mais 
+tabelas em um banco de dados. Isso permite que você relacione dados de uma tabela com dados de outra 
+tabela, criando uma estrutura de dados mais organizada e eficiente.
+
+Tipos de relacionamentos
+
+Existem três tipos principais de relacionamentos entre tabelas:
+
+1. One-to-One (1:1)
+Um registro em uma tabela está relacionado a apenas um registro em outra tabela. Exemplo:
+
+Uma tabela pessoas com uma coluna idpessoa e uma tabela enderecos com uma coluna idendereco.
+Cada pessoa tem apenas um endereço, e cada endereço está relacionado a apenas uma pessoa.
+ 
+
+2. One-to-Many (1:N)
+Um registro em uma tabela está relacionado a múltiplos registros em outra tabela. Exemplo:
+
+Uma tabela funcionarios com uma coluna idfuncionario e uma tabela filhos com uma coluna idfilho.
+Cada funcionário pode ter múltiplos filhos, e cada filho está relacionado a apenas um funcionário.
+
+3. Many-to-Many (M:N)
+Múltiplos registros em uma tabela estão relacionados a múltiplos registros em outra tabela. Exemplo:
+
+Uma tabela habilidades com uma coluna idhabilidade , e uma outra tabela fazendo a ligação entre habilidade e funcionarios,
+ para que não haja nenhuma incoerencia 
+Chaves estrangeiras
+
+Para estabelecer um relacionamento entre tabelas, você precisa criar uma chave estrangeira (Foreign Key) em 
+uma das tabelas. A chave estrangeira é uma coluna que referencia a chave primária de outra tabela.
+
+Exemplo:
+
+Tabela filhos com uma coluna idfuncionario que é uma chave estrangeira que referencia a chave primária 
+fkfuncionario da tabela funcionarios.
+
+create table funcionarios (
+idfuncionarios int primary key auto_increment,
+nome varchar(255),
+telefone varchar(255),
+datanascimento date ,
+salario double 
+);
+
+INSERT INTO funcionarios (nome, telefone, datanascimento, salario) VALUES 
+('João Silva', '11987654321', '1985-03-15', 3500.00),
+('Maria Oliveira', '11876543210', '1990-07-22', 4200.00);
+
+
+
+CREATE TABLE Endereco (
+  idEndereco INT PRIMARY KEY AUTO_INCREMENT,
+  rua VARCHAR(255),
+  numero INT,
+  bairro VARCHAR(255),
+  cidade VARCHAR(255),
+  estado VARCHAR(255),
+  cep VARCHAR(255),
+  fk_Funcionario INT unique ,
+  FOREIGN KEY (fk_Funcionario) REFERENCES Funcionarios(idFuncionarios)
+);
+drop table endereco;
+
+INSERT INTO Endereco (rua, numero, bairro, cidade, estado, cep, fk_Funcionario) VALUES 
+('Avenida Paulista', 1578, 'Bela Vista', 'São Paulo', 'SP', '01310-200', 1),
+('Rua das Flores', 45, 'Jardim Botânico', 'Rio de Janeiro', 'RJ', '22260-000', 2);
+
+CREATE TABLE Filhos (
+  idFilho INT PRIMARY KEY AUTO_INCREMENT,
+  nomeFilho VARCHAR(255),
+  dataNascimento DATE,
+  fkFuncionario INT,
+  FOREIGN KEY (fkFuncionario) REFERENCES Funcionarios(idFuncionarios)
+);
+
+INSERT INTO Filhos (nomeFilho, dataNascimento, fkFuncionario) VALUES 
+('Luciano Silva', '2010-05-20', 1),
+('Ana Oliveira', '2015-09-15', 2);
+
+select * from filhos;
+  CREATE TABLE Habilidades(
+    idHabilidade INT PRIMARY KEY AUTO_INCREMENT,
+    nomeHabilidade Varchar(255)
+  );
+
+  INSERT INTO Habilidades (nomeHabilidade) VALUES 
+('Liderança'),
+('Comunicação');
+
+select * from habilidades;
+
+CREATE TABLE Habilidades_Funcionarios(
+  fkHabilidades int,
+  fkFuncionarios int,
+  FOREIGN KEY (fkHabilidades) REFERENCES Habilidades(idHabilidade),
+   FOREIGN KEY (fkFuncionarios) REFERENCES Funcionarios(idFuncionarios)
+);
+
+select * from Habilidades_Funcionarios;
+INSERT INTO Habilidades_Funcionarios (fkHabilidades, fkFuncionarios) VALUES 
+(2, 1),
+(1, 2);

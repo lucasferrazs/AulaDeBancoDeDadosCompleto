@@ -1,0 +1,12 @@
+select * from mysql.user;
+
+
+CREATE USER 'Pedro'@'localhost' IDENTIFIED BY '';
+
+GRANT ALL ON teste.* TO 'Pedro'@'localhost';
+
+SHOW GRANTS FOR 'Pedro'@'localhost';
+
+FLUSH PRIVILEGES;
+
+REVOKE INSERT, UPDATE ON teste.* FROM 'Pedro'@'localhost';

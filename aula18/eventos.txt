@@ -1,0 +1,75 @@
+O que são eventos?
+
+Eventos no MySQL são semelhantes a tarefas agendadas que podem ser programadas para serem 
+executadas automaticamente no banco de dados. Eles são gerenciados pelo Scheduler do MySQL 
+e podem ser configurados para executar uma instrução SQL em um horário específico ou em 
+intervalos regulares.
+
+
+Primeiro Verifique se o event_scheduler esta ativado para que os comandos funcionem , por padrão
+ele vem off 
+
+SHOW VARIABLES LIKE 'event_scheduler';
+
+se o valor for off use este comando aqui :
+
+SET GLOBAL event_scheduler = ON;
+
+
+Para criar um evento, você utiliza a instrução CREATE EVENT
+
+
+
+
+
+CREATE EVENT nome_do_evento
+ON SCHEDULE schedule
+DO
+    sql_statement;
+
+
+Exemplo evento para Limpar Despesas Antigas
+
+Podemos criar um evento que remove despesas que estão atrasadas 
+(ou seja, cuja dataPagamentoEsperado já passou) a cada mês.
+
+CREATE EVENT limpar_despesas_antigas
+ON SCHEDULE EVERY 1 MONTH
+DO
+BEGIN
+    DELETE FROM despesa
+    WHERE dataPagamentoEsperado < CURDATE();
+END;
+
+
+
+Evento para Notificar Sobre Despesas Futuras
+
+Um evento pode ser criado para notificar sobre despesas que estão programadas para o dia seguinte. 
+Para simplificar, vamos apenas inserir uma mensagem em uma tabela de log (que você precisaria criar) 
+para simular a notificação.
+
+
+CREATE TABLE log_notificacoes (
+    idlog int(11) PRIMARY KEY AUTO_INCREMENT,
+    mensagem varchar(255),
+    data_notificacao datetime DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE EVENT notificar_despesas_futuras
+ON SCHEDULE EVERY 1 DAY
+DO
+BEGIN
+    INSERT INTO log_notificacoes (mensagem)
+    SELECT CONCAT('Você tem uma despesa de ', valor, ' programada para amanhã: ', tipoDespesa)
+    FROM despesa
+    WHERE dataPagamentoEsperado = CURDATE() + INTERVAL 1 DAY;
+END;
+
+
+
+Permissões: Verifique se você tem as permissões necessárias para criar eventos.
+Scheduler: Certifique-se de que o event_scheduler está habilitado. Você pode habilitá-lo com o comando:
+
+
+SET GLOBAL event_scheduler = ON;

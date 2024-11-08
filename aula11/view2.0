@@ -1,0 +1,36 @@
+O que são Views?
+Views (ou "visões") em bancos de dados são objetos que representam uma consulta SQL armazenada. 
+Elas permitem que você trate uma consulta complexa como se fosse uma tabela, simplificando 
+o acesso a dados frequentemente consultados ou manipulados. As views são particularmente úteis 
+para encapsular lógica de consulta, melhorar a segurança e facilitar a manutenção do código SQL.
+
+Vantagens das Views
+Abstração: As views permitem que os usuários acessem dados sem precisar conhecer a estrutura 
+complexa das tabelas subjacentes.
+
+Segurança: Você pode conceder permissões de acesso a views específicas sem dar acesso direto às tabelas subjacentes, 
+ajudando a proteger dados sensíveis.
+
+Simplicidade: Consultas complexas podem ser encapsuladas em uma view, permitindo que os usuários realizem consultas simples.
+
+Reutilização: As views podem ser reutilizadas em várias consultas, evitando a duplicação de código SQL.
+
+
+
+CREATE VIEW vw_Funcionarios_Filhos_Enderecos AS
+SELECT 
+    f.idfuncionarios,
+    f.nome AS NomeFuncionario,
+    fi.nomeFilho AS NomeFilho,
+    e.rua,
+    e.numero,
+    e.bairro,
+    e.cidade,
+    e.estado,
+    e.cep
+FROM 
+    funcionarios f
+LEFT JOIN 
+    Filhos fi ON f.idfuncionarios = fi.fkFuncionario
+LEFT JOIN 
+    Endereco e ON f.idfuncionarios = e.fkFuncionario;

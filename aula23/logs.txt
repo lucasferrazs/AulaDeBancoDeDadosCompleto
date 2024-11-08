@@ -1,0 +1,13 @@
+o MySQL gera logs automaticamente para diferentes tipos de eventos. Os principais tipos de logs no MySQL incluem:
+
+Log de Erros: Registra mensagens de erro e informações sobre o servidor.
+Log Binário: Registra todas as alterações feitas no banco de dados, permitindo a replicação e recuperação de dados.
+Log de Consultas Lentas: Registra consultas que demoram mais do que um tempo especificado para serem executadas.
+
+
+[mysqld]
+log_error = /var/log/mysql/error.log
+log_bin = /var/log/mysql/mysql-bin.log
+slow_query_log = 1
+slow_query_log_file = /var/log/mysql/slow.log
+long_query_time = 2

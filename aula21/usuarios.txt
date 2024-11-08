@@ -1,0 +1,62 @@
+Vamos lá!
+
+O que são usuários no MySQL?
+
+No MySQL, um usuário é uma entidade que pode se conectar ao banco de dados e realizar operações, como criar, ler, 
+atualizar e deletar dados. Cada usuário tem seu próprio conjunto de permissões e privilégios, que definem o que ele 
+pode fazer no banco de dados.
+
+Criando conexões: CREATE usuarios
+
+Para criar um novo usuário no MySQL, você usa a instrução CREATE USER. A sintaxe básica é a seguinte:
+
+CREATE USER 'nome_usuario'@'host' IDENTIFIED BY 'senha';
+
+'nome_usuario' é o nome do usuário que você deseja criar.
+
+'host' é o endereço IP ou nome do host do qual o usuário se conectará ao banco de dados. 
+
+Você pode usar % para permitir conexões de qualquer host.
+
+senha é a senha do usuário.
+
+Exemplo:
+
+CREATE USER 'joao'@'%' IDENTIFIED BY 'minhasenha';
+(as vezes pode não funcionar , então direcione qual o host)
+
+Isso cria um usuário chamado "joao" que pode se conectar ao banco de dados de qualquer host, com a senha "minhasenha".
+
+Gerenciando conexões: ALTER usuarios
+
+Para alterar as propriedades de um usuário existente, você usa a instrução ALTER USER. A sintaxe básica é a seguinte:
+
+ALTER USER 'nome_usuario'@'host' IDENTIFIED BY 'nova_senha';
+
+'nome_usuario' é o nome do usuário que você deseja alterar.
+
+'host' é o endereço IP ou nome do host do qual o usuário se 
+conectará ao banco de dados.
+
+'nova_senha' é a nova senha do usuário.
+
+Exemplo:
+
+ALTER USER 'joao'@'%' IDENTIFIED BY 'minhanovasenha';
+
+
+
+Excluindo conexões: DROP usuarios
+
+Para excluir um usuário do MySQL, você usa a instrução DROP USER. A sintaxe básica é a seguinte:
+
+
+DROP USER 'nome_usuario'@'host';
+
+nome_usuario é o nome do usuário que você deseja excluir.
+
+host é o endereço IP ou nome do host do qual o usuário se conectará ao banco de dados.
+
+Exemplo:
+
+DROP USER 'joao'@'%';

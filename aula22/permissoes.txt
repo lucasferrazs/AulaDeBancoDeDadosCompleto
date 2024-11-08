@@ -1,0 +1,90 @@
+O que são permissões no MySQL?
+
+No MySQL, permissões são os direitos que um usuário tem para executar determinadas ações em um banco de dados. 
+Existem diferentes tipos de permissões, como SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, ALTER, INDEX, GRANT, e REVOKE.
+
+Criando permissões: GRANT
+
+Para conceder permissões a um usuário no MySQL, você usa a instrução GRANT. A sintaxe básica é a seguinte:
+
+GRANT permissões ON nome_do_banco_de_dados.* TO 'nome_usuario'@'host';
+
+
+permissões é uma lista de permissões que você deseja conceder ao usuário. Você pode usar ALL para conceder todas as permissões.
+nome_do_banco_de_dados é o nome do banco de dados no qual as permissões serão concedidas. Você pode usar *.* para conceder 
+permissões em todos os bancos de dados.
+
+nome_usuario é o nome do usuário que receberá as permissões.
+
+host é o endereço IP ou nome do host do qual o usuário se conectará ao banco de dados.
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON minhabase.* TO 'joao'@'%';
+
+Isso concede permissões SELECT, INSERT, UPDATE, e DELETE ao usuário "joao" no banco de dados "minhabase".
+
+Gerenciando permissões: REVOKE
+
+Para remover permissões de um usuário no MySQL, você usa a instrução REVOKE. A sintaxe básica é a seguinte:
+
+REVOKE permissões ON nome_do_banco_de_dados.* FROM 'nome_usuario'@'host';
+
+permissões é uma lista de permissões que você deseja remover do usuário.
+nome_do_banco_de_dados é o nome do banco de dados no qual as permissões serão removidas.
+nome_usuario é o nome do usuário do qual as permissões serão removidas.
+host é o endereço IP ou nome do host do qual o usuário se conectará ao banco de dados.
+
+Exemplo:
+
+
+REVOKE INSERT, UPDATE ON minhabase.* FROM 'joao'@'%';
+
+Isso remove as permissões INSERT e UPDATE do usuário "joao" no banco de dados "minhabase".
+
+Excluindo permissões: REVOKE
+
+A instrução REVOKE também pode ser usada para remover todas as permissões de um usuário em um banco de dados. 
+A sintaxe é a seguinte:
+
+REVOKE ALL PRIVILEGES ON nome_do_banco_de_dados.* FROM 'nome_usuario'@'host';
+
+Isso remove todas as permissões do usuário nome_usuario no banco de dados nome_do_banco_de_dados.
+
+Lembre-se de que, antes de excluir um usuário, você deve revogar todas as permissões associadas a ele, 
+para evitar problemas de segurança.
+
+
+
+Principais permissões
+
+ALL PRIVILEGES: Concede todas as permissões disponíveis
+GRANT ALL PRIVILEGES ON database_name.* TO 'usuario'@'host';
+
+SELECT: Permite que o usuário leia dados de tabelas.
+GRANT SELECT ON database_name.table_name TO 'usuario'@'host';
+
+INSERT: Permite que o usuário insira dados em tabelas.
+GRANT INSERT ON database_name.table_name TO 'usuario'@'host';
+
+UPDATE: Permite que o usuário atualize dados em tabelas.
+GRANT UPDATE ON database_name.table_name TO 'usuario'@'host';
+
+DELETE: Permite que o usuário exclua dados de tabelas.
+GRANT DELETE ON database_name.table_name TO 'usuario'@'host';
+
+CREATE: Permite que o usuário crie novas tabelas ou bancos de dados.
+GRANT CREATE ON database_name.* TO 'usuario'@'host';
+
+DROP: Permite que o usuário exclua tabelas ou bancos de dados.
+GRANT DROP ON database_name.* TO 'usuario'@'host';
+
+INDEX: Permite que o usuário crie e exclua índices.
+GRANT INDEX ON database_name.table_name TO 'usuario'@'host';
+
+ALTER: Permite que o usuário altere a estrutura de tabelas existentes.
+GRANT ALTER ON database_name.table_name TO 'usuario'@'host';
+
+EXECUTE: Permite que o usuário execute procedimentos armazenados.
+GRANT EXECUTE ON PROCEDURE procedure_name TO 'usuario'@'host';
+
+GRANT OPTION: Permite que o usuário conceda suas permissões a outros usuários.
+GRANT SELECT ON database_name.* TO 'usuario'@'host' WITH GRANT OPTION;

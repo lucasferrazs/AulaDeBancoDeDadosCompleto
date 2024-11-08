@@ -1,0 +1,96 @@
+Estruturas Condicionais
+As estruturas condicionais permitem que você execute diferentes blocos de código com base em condições específicas. 
+Elas são usadas para tomar decisões no código. Se uma condição for verdadeira, um bloco de código é executado; 
+se não, outro bloco pode ser executado (ou nenhum).
+
+SELECT 
+    nome,
+    salario,
+    IF(salario > 5000, 'Alto', 'Baixo') AS nivel_salarial
+FROM 
+    funcionarios;
+
+
+
+SELECT 
+    nome,
+    salario,
+    CASE 
+        WHEN salario > 5000 THEN 'Alto'
+        WHEN salario BETWEEN 3000 AND 5000 THEN 'Médio'
+        ELSE 'Baixo'
+    END AS nivel_salarial
+FROM 
+    funcionarios;
+
+
+Estruturas de Repetição
+As estruturas de repetição (ou loops) permitem que você execute um bloco de código várias vezes, 
+o que é útil quando você precisa realizar a mesma operação repetidamente. Existem várias formas 
+de implementar loops, dependendo da lógica que você deseja aplicar. 
+
+
+DELIMITER $$
+
+CREATE PROCEDURE listarFuncionariosComFilhos()
+BEGIN
+    DECLARE done INT DEFAULT FALSE;
+    DECLARE funcionario_nome VARCHAR(255);
+    DECLARE funcionario_id INT;
+    DECLARE filhos_count INT;
+
+    -- Cursor para selecionar todos os funcionários
+    DECLARE funcionario_cursor CURSOR FOR 
+        SELECT idfuncionarios, nome FROM funcionarios;
+
+    -- Handler para quando não houver mais registros
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+
+    OPEN funcionario_cursor;
+
+    read_loop: LOOP
+        FETCH funcionario_cursor INTO funcionario_id, funcionario_nome;
+        IF done THEN
+            LEAVE read_loop;
+        END IF;
+
+        -- Contar quantos filhos o funcionário tem
+        SELECT COUNT(*) INTO filhos_count 
+        FROM filhos 
+        WHERE fkFuncionario = funcionario_id;
+
+        -- Imprimir o nome do funcionário e a contagem de filhos
+        SELECT CONCAT('Funcionário: ', funcionario_nome, ', Número de Filhos: ', filhos_count) AS resultado;
+    END LOOP;
+
+    CLOSE funcionario_cursor;
+END$$
+
+DELIMITER ;
+
+
+Explicação do Procedimento
+Declaração de Variáveis:
+
+done: Uma variável booleana que indica quando o cursor terminou de iterar.
+funcionario_nome: Para armazenar o nome do funcionário atual.
+funcionario_id: Para armazenar o ID do funcionário atual.
+filhos_count: Para armazenar a contagem de filhos do funcionário atual.
+Cursor:
+
+Um cursor é declarado para selecionar todos os funcionários da tabela funcionarios. Ele itera sobre os registros.
+Handler:
+
+Um handler é definido para lidar com a situação em que não há mais registros a serem lidos pelo cursor.
+Loop:
+
+O loop (read_loop) é iniciado e busca (FETCH) o próximo funcionário.
+Se não houver mais funcionários (done é verdadeiro), o loop é encerrado.
+Para cada funcionário, o procedimento conta quantos filhos ele tem na tabela filhos usando uma consulta SELECT COUNT(*).
+O nome do funcionário e a contagem de filhos são exibidos usando um comando SELECT.
+Fechamento do Cursor:
+
+Após a iteração, o cursor é fechado.
+
+
+CALL listarFuncionariosComFilhos();

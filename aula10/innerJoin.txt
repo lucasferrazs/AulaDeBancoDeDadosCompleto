@@ -1,0 +1,95 @@
+Inner Join
+
+Um Inner Join é um tipo de junção de tabelas que combina linhas de duas ou mais tabelas 
+com base em uma condição de igualdade. A condição de igualdade é definida por uma coluna 
+comum entre as tabelas.
+
+
+Tipos de Inner Join
+
+Existem vários tipos de Inner Join, incluindo:
+
+Inner Join simples: Combina linhas de duas tabelas com base em uma condição de igualdade.
+Inner Join múltiplo: Combina linhas de três ou mais tabelas com base em condições de igualdade.
+Inner Join com subconsultas: Combina linhas de duas tabelas com base em condições de igualdade e subconsultas.
+
+
+Inner Join Simples 
+
+Para realizar um Inner Join entre as tabelas "Funcionarios" e "Endereco", podemos usar a seguinte consulta:
+
+SELECT f.nome, f.telefone, e.rua, e.numero, e.cidade
+FROM Funcionarios f
+INNER JOIN Endereco e ON f.idFuncionarios = e.idFuncionario;
+
+
+
+
+Inner Join Múltiplo
+
+Um Inner Join múltiplo é um tipo de junção de tabelas que combina linhas de três ou mais tabelas com base em condições de igualdade.
+
+
+SELECT f.nome, f.telefone, e.rua, e.numero, e.cidade, fi.nomeFilho, fi.dataNascimento
+FROM Funcionarios f
+INNER JOIN Endereco e ON f.idFuncionarios = e.idFuncionario
+INNER JOIN Filhos fi ON f.idFuncionarios = fi.idFuncionario;
+
+
+
+
+Inner Join com Subquery
+
+Para realizar um Inner Join com subquery entre as tabelas "Funcionarios" e "Endereco", podemos usar a seguinte consulta:
+
+
+SELECT f.nome, f.telefone, e.rua, e.numero, e.cidade
+FROM Funcionarios f
+INNER JOIN Endereco e ON f.idFuncionarios = e.idFuncionario
+WHERE f.idFuncionarios IN (
+  SELECT idFuncionario
+  FROM Endereco
+  WHERE cidade = 'São Paulo'
+);
+
+///
+
+LEFT JOIN 
+
+O LEFT JOIN retorna todas as linhas da tabela à esquerda (neste caso, funcionarios), e as linhas correspondentes 
+da tabela à direita (Endereco). Se não houver correspondência, o resultado será NULL para as colunas da tabela à direita.
+
+
+SELECT f.nome, e.rua
+FROM funcionarios f
+LEFT JOIN Endereco e ON f.idfuncionarios = e.idFuncionario;
+
+Essa consulta retorna todos os funcionários e suas ruas, mesmo que não tenham um endereço registrado. 
+Para funcionários sem endereço, a coluna rua será NULL.
+
+///
+
+RIGHT JOIN 
+
+O RIGHT JOIN é o oposto do LEFT JOIN. Ele retorna todas as linhas da tabela à direita e as linhas 
+correspondentes da tabela à esquerda. Se não houver correspondência, o resultado será NULL para as colunas da tabela à esquerda.
+
+SELECT f.nome, e.rua
+FROM funcionarios f
+RIGHT JOIN Endereco e ON f.idfuncionarios = e.idFuncionario;
+
+Essa consulta retorna todas as ruas e os nomes dos funcionários que têm um endereço. 
+Se houver endereços sem um funcionário correspondente, a coluna nome será NULL.
+
+////
+
+Union 
+
+O UNION combina os resultados de duas ou mais consultas SELECT. Para que isso funcione, 
+as consultas devem ter o mesmo número de colunas e tipos de dados compatíveis. 
+O UNION remove duplicatas, enquanto o UNION ALL mantém duplicatas.
+
+
+SELECT nome FROM funcionarios
+UNION
+SELECT nomeFilho FROM Filhos;

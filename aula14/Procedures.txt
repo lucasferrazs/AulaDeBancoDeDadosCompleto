@@ -1,0 +1,99 @@
+Procedures (ou procedimentos armazenados) no MySQL são blocos de código SQL que são armazenados 
+no banco de dados e podem ser executados como uma única unidade. Eles são usados para encapsular 
+lógica de negócios, simplificar operações complexas e melhorar a eficiência de execução de comandos 
+SQL repetidos. Aqui estão algumas características e benefícios das procedures no MySQL:
+
+Características das Procedures
+Armazenamento no Banco de Dados: As procedures são armazenadas no servidor de banco de dados, 
+o que significa que podem ser reutilizadas sem a necessidade de reescrever o código SQL.
+
+Parâmetros: As procedures podem aceitar parâmetros de entrada (IN), parâmetros de saída (OUT) 
+e parâmetros de entrada e saída (INOUT). Isso permite que você passe dados para a procedure e 
+receba resultados dela.
+
+Lógica de Controle: As procedures podem incluir lógica de controle, como loops e condicionais 
+(IF, CASE), o que permite realizar operações complexas.
+
+Segurança: As procedures podem ajudar a encapsular a lógica de negócios e limitar o acesso direto às 
+tabelas, permitindo que os usuários executem apenas as procedures necessárias.
+
+Melhoria de Performance: Como as procedures são compiladas e otimizadas uma vez no servidor, elas 
+podem executar mais rapidamente do que comandos SQL individuais enviados repetidamente.
+
+Benefícios das Procedures
+Reutilização de Código: Você pode escrever uma vez a lógica e reutilizá-la em várias partes da aplicação, 
+evitando duplicação de código.
+
+Facilidade de Manutenção: Se você precisar alterar a lógica, pode fazê-lo em um único lugar, sem a 
+necessidade de modificar várias partes do código.
+
+Redução de Tráfego de Rede: Em vez de enviar várias instruções SQL do cliente para o servidor, você 
+pode enviar uma única chamada para a procedure, reduzindo a quantidade de dados transmitidos pela rede.
+
+Abstração: As procedures podem esconder a complexidade da lógica de negócios, permitindo que os 
+desenvolvedores e usuários interajam com o banco de dados de maneira mais simples.
+
+Segurança: Você pode controlar quem tem acesso a quais dados e operações, permitindo que usuários 
+executem apenas determinadas procedures, sem dar acesso direto às tabelas.
+
+
+Exemplos de procedure:
+
+Exemplo 1: Adicionar um Funcionário
+
+
+DELIMITER //
+
+CREATE PROCEDURE AdicionarFuncionario(
+    IN p_nome VARCHAR(255),
+    IN p_telefone VARCHAR(255),
+    IN p_datanascimento DATE,
+    IN p_salario DOUBLE
+)
+BEGIN
+    INSERT INTO funcionarios (nome, telefone, datanascimento, salario)
+    VALUES (p_nome, p_telefone, p_datanascimento, p_salario);
+END //
+
+DELIMITER ;
+
+
+
+Exemplo2 : Adicionar filhos
+
+DELIMITER //
+
+CREATE PROCEDURE AdicionarFilho(
+    IN p_nomeFilho VARCHAR(255),
+    IN p_dataNascimento DATE,
+    IN p_fkFuncionario INT
+)
+BEGIN
+    INSERT INTO Filhos (nomeFilho, dataNascimento, fkFuncionario)
+    VALUES (p_nomeFilho, p_dataNascimento, p_fkFuncionario);
+END //
+
+DELIMITER ;
+
+
+
+Chamando Procedimentos
+Para chamar os procedimentos que você criou, você usaria a instrução CALL.
+
+Chamar o Procedimento para Adicionar um Funcionário:
+
+CALL AdicionarFuncionario('João Silva', '1234-5678', '1980-01-01', 3000.00);
+
+
+Chamar o Procedimento para Adicionar um Filho:
+
+CALL AdicionarFilho('Maria Silva', '2010-05-15', 1);  -- Supondo que o id do funcionário seja 1
+
+
+
+Modificando Procedimentos
+
+No entanto, o MySQL não permite alterar diretamente o corpo de um procedimento. Você precisa excluí-lo e criá-lo novamente.
+
+
+DROP PROCEDURE IF EXISTS AdicionarFuncionario;

@@ -1,0 +1,37 @@
+create database loja;
+use loja;
+
+create table funcionarios (
+idfuncionarios int primary key auto_increment,
+nome varchar(255),
+telefone varchar(255),
+datanascimento date ,
+salario double ,
+qtdFilhos int
+);
+
+select * from funcionarios;
+
+/*adiciona uma nova coluna */
+ALTER TABLE funcionarios
+ADD COLUMN cpf VARCHAR(20);
+
+/*Remover uma coluna */
+ALTER TABLE funcionarios
+DROP COLUMN cpf;
+
+/*Modificar o tipo de dado da coluna*/
+ALTER TABLE  funcionarios MODIFY COLUMN datanascimento float;
+
+/*Renomear coluna*/
+ALTER TABLE funcionarios
+RENAME COLUMN nome TO nome_cliente;
+
+ALTER TABLE funcionarios
+CHANGE COLUMN nome Nome_cliente VARCHAR(255);
+
+/*Renomear a própria tabela*/
+RENAME TABLE funcionarios TO funcionarios_empresa;
+
+/*Drop table*/
+drop table funcionarios_empresa;

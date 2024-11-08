@@ -1,0 +1,7 @@
+mysqlcheck -u root -p --repair mysql; 'comando usado caso de erro no comando create user';
+
+CREATE USER 'teste'@'localhost' IDENTIFIED BY '';
+
+ALTER USER 'teste'@'localhost' IDENTIFIED BY '123';
+
+DROP USER 'teste'@'localhost';

@@ -1,0 +1,42 @@
+Subqueries
+
+Uma subquery é uma consulta SQL que é executada dentro de outra consulta SQL. Ela é 
+usada para obter dados de uma tabela e, em seguida, usar esses dados para filtrar ou 
+manipular os dados de outra tabela.
+
+Tipos de Subqueries
+
+Existem dois tipos principais de subqueries:
+
+Subquery de linha: Retorna uma linha de dados.
+Subquery de tabela: Retorna uma tabela de dados.
+
+
+SELECT nome
+FROM Funcionarios
+WHERE salario = (
+  SELECT MAX(salario)
+  FROM Funcionarios
+);
+
+/*Essa consulta irá retornar o nome do funcionário com o maior salário.*/
+
+
+
+SELECT nome, salario
+FROM funcionarios
+WHERE salario > (SELECT AVG(salario) FROM funcionarios);
+
+/*Encontrar funcionários com salário maior que a média*/
+
+
+
+
+SELECT f.*
+FROM funcionarios f
+WHERE f.idfuncionario IN (
+  SELECT fi.id_pai
+  FROM filhos fi, endereco e
+  WHERE fi.endereco = e.idendereco
+  AND e.rua = 'Rua dos Pinheiros'
+);

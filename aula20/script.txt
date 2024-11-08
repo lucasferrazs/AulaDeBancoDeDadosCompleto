@@ -1,0 +1,68 @@
+create database testebackup;
+use testebackup;
+drop database testebackup;
+show tables ;
+
+select * from conta;
+
+drop table conta;
+
+drop table despesa;
+
+drop table receita;
+
+drop table transferencia;
+
+
+mysqldump -u root -p testebackup > testebackup.sql;
+
+mysql -u root -p testebackup < testebackup.sql;
+
+CREATE TABLE conta (
+  idconta int(11) primary key auto_increment,
+  tipoConta enum('carteira','contaCorrente','contaPoupanca','instituicaoFinaceira') DEFAULT NULL,
+  saldo double(10,2) DEFAULT NULL
+);
+select * from conta ;
+
+insert into conta values(null, 'carteira', 0);
+
+
+CREATE TABLE despesa (
+  iddespesa int(11) primary key auto_increment,
+  valor double(10,2) DEFAULT NULL,
+  dataPagamento date DEFAULT NULL,
+  dataPagamentoEsperado date DEFAULT NULL,
+  tipoDespesa enum('alimentacao','educacao','lazer','moradia','roupa','saude','transporte','outros') DEFAULT NULL,
+  fk_conta int(11) ,
+  foreign key (fk_conta)
+  references conta (idconta)
+);
+
+insert into despesa values(null, 1000,'2023-12-30','2023-12-30','moradia',1);
+
+CREATE TABLE receita (
+  idreceita int(11) primary key auto_increment,
+  valor double(10,2) DEFAULT NULL,
+  dataRecebimento date DEFAULT NULL,
+  dataRecebimentoEsperado date DEFAULT NULL,
+  descricao varchar(300) DEFAULT NULL,
+  tipoReceita enum('salario','presente','premio','outros') DEFAULT NULL,
+  fk_conta int(11) DEFAULT NULL,
+  foreign key (fk_conta)
+  references conta (idconta)
+);
+
+insert into receita values(null, 2000,'2023-12-30','2023-12-30',"salario que veio da empresa",'salario',1);
+
+CREATE TABLE transferencia (
+  valorTranferencia double DEFAULT NULL,
+  fk_conta_envia int(11) DEFAULT NULL,
+  foreign key (fk_conta_envia)
+  references conta (idconta),
+  fk_conta_recebe int(11) DEFAULT NULL,
+  foreign key (fk_conta_recebe)
+  references conta (idconta)
+); 
+
+

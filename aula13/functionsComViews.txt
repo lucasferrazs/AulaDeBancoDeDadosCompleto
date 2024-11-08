@@ -1,0 +1,35 @@
+uma view no MySQL pode armazenar uma consulta que inclui chamadas a funções definidas pelo usuário. 
+Isso permite que você encapsule a lógica de uma consulta complexa, incluindo cálculos ou manipulações 
+de dados, e a torne facilmente reutilizável como uma tabela virtual.
+
+
+Criando uma View com uma Chamada de Função
+Vamos considerar um exemplo prático usando a função calcular_salario_anual que definimos anteriormente. 
+Suponha que você queira criar uma view que mostre o nome dos funcionários e seus salários anuais.
+
+
+Passo 1: criar a função
+
+DELIMITER //
+
+CREATE FUNCTION calcular_salario_anual(salario_mensal DOUBLE)
+RETURNS DOUBLE
+BEGIN
+    RETURN salario_mensal * 12;
+END //
+
+DELIMITER ;
+
+
+Passo 2: Criar a View
+Agora, você pode criar uma view que usa essa função:
+
+CREATE VIEW vw_salarios_anuais AS
+SELECT nome, calcular_salario_anual(salario) AS salario_anual
+FROM funcionarios;
+
+
+Consultando a View
+Depois de criar a view, você pode consultá-la como se fosse uma tabela:
+
+SELECT * FROM vw_salarios_anuais;

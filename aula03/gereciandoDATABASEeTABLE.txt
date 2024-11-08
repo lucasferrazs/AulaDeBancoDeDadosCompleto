@@ -1,0 +1,21 @@
+Comandos ultilizaods na aula :
+
+create database loja;
+use loja;
+
+create table funcionarios (
+idfuncionarios int primary key auto_increment,
+nome varchar(255),
+telefone varchar(255),
+datanascimento date ,
+salario double ,
+qtdFilhos int
+);
+
+insert into funcionarios values(null,"Lucas","55123456789",'10-03-1999', 1333, 0);
+
+delete from funcinarios where idfuncionarios = 1;
+
+update funcionarios set datanascimento = '1999-10-03' where idfuncionarios = 1;
+
+select * from funcionarios;

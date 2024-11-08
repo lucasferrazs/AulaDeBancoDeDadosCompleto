@@ -1,0 +1,60 @@
+1. Armazenamento de Dados em Disco
+O armazenamento em disco é o método mais comum utilizado pelo MySQL. Os dados são armazenados em arquivos 
+no sistema de arquivos do servidor. Aqui estão algumas características:
+
+Armazenamento Persistente: Os dados são mantidos mesmo após o desligamento do servidor ou a reinicialização do MySQL.
+
+Mecanismos de Armazenamento: O MySQL suporta diferentes mecanismos de armazenamento (storage engines), como InnoDB, MyISAM, 
+MEMORY, entre outros. Cada mecanismo tem suas próprias características e é otimizado para diferentes tipos de operações:
+
+InnoDB: Suporta transações, integridade referencial (foreign keys) e é otimizado para operações de leitura e escrita. 
+É o mecanismo de armazenamento padrão no MySQL.
+
+MyISAM: Mais rápido para operações de leitura, mas não suporta transações. É útil para aplicações que realizam muitas 
+leituras e poucas gravações.
+
+CSV: Permite armazenar dados em formato CSV, útil para exportação e importação de dados.
+
+Arquitetura de Armazenamento: Os dados são armazenados em tabelas, que são representadas por arquivos no disco. 
+Por exemplo, no InnoDB, cada tabela pode ser armazenada em um arquivo .ibd, enquanto no MyISAM, os dados e índices 
+são armazenados em arquivos .MYD e .MYI, respectivamente.
+
+
+2. Armazenamento de Dados em Memória
+O armazenamento em memória é utilizado para armazenar dados temporariamente na memória RAM, o que permite acesso 
+mais rápido em comparação ao armazenamento em disco. O mecanismo de armazenamento MEMORY (também conhecido como HEAP) 
+é usado para este propósito.
+
+Desempenho Rápido: As operações de leitura e escrita são muito mais rápidas, pois os dados são armazenados na memória.
+
+Volatilidade: Os dados armazenados em tabelas MEMORY são voláteis, ou seja, são perdidos quando o MySQL é desligado ou reiniciado.
+
+Uso de Tabelas Temporárias: É comum usar tabelas MEMORY para armazenar dados temporários ou intermediários durante o 
+processamento de consultas.
+
+Exemplo de criação de tabela em memória:
+
+CREATE TABLE tabela_temporaria (
+    id INT PRIMARY KEY,
+    nome VARCHAR(100)
+) ENGINE=MEMORY;
+
+
+3. Armazenamento de Dados em Cluster
+O armazenamento em cluster refere-se a técnicas que permitem que múltiplos servidores trabalhem 
+juntos para armazenar e processar dados, aumentando a disponibilidade e a escalabilidade.
+
+MySQL Cluster: O MySQL Cluster é uma solução de banco de dados distribuído que permite que dados sejam armazenados 
+em um cluster de servidores, permitindo alta disponibilidade e escalabilidade horizontal. Ele usa o mecanismo de 
+armazenamento NDB (Network Database).
+
+Características:
+
+Alta Disponibilidade: O MySQL Cluster replica dados em múltiplos nós, garantindo que os dados 
+estejam disponíveis mesmo se um nó falhar.
+
+Escalabilidade: Permite que você adicione mais nós ao cluster para aumentar a capacidade de armazenamento e a performance.
+
+Transações: Suporta transações ACID (Atomicidade, Consistência, Isolamento, Durabilidade).
+
+Uso Típico: É usado em aplicações que exigem alta disponibilidade, como serviços financeiros, telecomunicações e jogos online.

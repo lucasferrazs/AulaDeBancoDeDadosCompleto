@@ -1,0 +1,71 @@
+Modelagem de Dados: A modelagem de dados é um processo fundamental na construção de 
+sistemas de informação. Ela nos permite representar e organizar os dados de forma estruturada, 
+facilitando o entendimento e a interação com esses dados. Vamos explorar os conceitos-chave:
+
+Entidades:
+No início do processo de modelagem de dados, identificamos as entidades. Essas entidades 
+representam os objetos ou conceitos relevantes para o domínio do problema. Em outras palavras, 
+são os elementos principais com os quais lidamos no sistema.
+
+Por exemplo, em um sistema de gerenciamento de biblioteca, as entidades podem ser “Livro”, “Autor”, “Usuário” etc.
+
+Atributos:
+As entidades possuem atributos, que são características ou propriedades que descrevem essas entidades.
+
+Voltando ao exemplo da biblioteca:
+A entidade “Livro” pode ter atributos como “Título”, “ISBN”, “Ano de Publicação” e “Quantidade de Páginas”.
+A entidade “Autor” pode ter atributos como “Nome”, “Nacionalidade” e “Data de Nascimento”.
+Esses atributos ajudam a detalhar cada entidade e a tornam única.
+
+Chave Primária:
+Um conceito importante é a chave primária. Ela é um atributo especial que identifica 
+unicamente cada registro dentro de uma entidade.
+
+Geralmente, a chave primária é um número inteiro autoincremental. Por exemplo, 
+um ID único para cada livro na biblioteca.
+
+A chave primária permite consultas eficientes no banco de dados e garante a unicidade dos registros.
+
+Modelando Atributos:
+Ao modelar um banco de dados, definimos a chave primária da entidade e, em seguida, 
+adicionamos outros atributos.
+
+Além da chave primária, as entidades podem ter diversos outros atributos. É importante seguir 
+boas práticas de nomenclatura, como iniciar os nomes com letra minúscula e usar nomes no singular.
+
+Por exemplo, para a entidade “Produto”, podemos ter atributos como “Nome”, “Descrição” e “Preço”.
+
+Padrões de Modelagem:
+
+Adotar padrões de modelagem de dados facilita a compreensão e a adoção desses padrões entre equipes.
+Isso torna o modelo autoexplicativo, simplificando o desenvolvimento e a manutenção dos bancos de dados.
+
+
+
+
+Tipos basicos de dados
+
+Aqui estão os principais tipos de dados no MySQL:
+
+Tipos Numéricos
+INT: Um número inteiro, ex. 1, 2, 3, etc.
+FLOAT: Um número decimal, ex. 3,14, -0,5, etc.
+DOUBLE: Um número de ponto flutuante de dupla precisão, ex. 3,14159, -0,12345, etc.
+DECIMAL: Um número decimal de precisão fixa, ex. 3,14, -0,50, etc.
+
+Tipos de String
+CHAR: Uma string de comprimento fixo, ex. 'olá', 'tchau', etc.
+VARCHAR: Uma string de comprimento variável, ex. 'olá', 'tchau', etc.
+TEXT: Um bloco de texto grande, ex. um parágrafo ou artigo.
+ENUM: Uma enumeração, uma string que só pode ter valores específicos, 
+ex. 'vermelho', 'verde', 'azul', etc.
+
+Tipos de Data e Hora
+DATE: Uma data, ex. '2022-07-25', '1999-12-31', etc.
+TIME: Um tempo, ex. '12:30:00', '14:45:00', etc.
+DATETIME: Uma combinação de data e hora, ex. '2022-07-25 12:30:00', '1999-12-31 14:45:00', etc.
+TIMESTAMP: Um carimbo de data e hora, ex. '2022-07-25 12:30:00', '1999-12-31 14:45:00', etc.
+
+Outros Tipos
+BOOLEAN: Um valor verdadeiro ou falso, ex. VERDADEIRO, FALSO, etc.
+BLOB: Um objeto binário grande, ex. uma imagem ou arquivo de áudio.

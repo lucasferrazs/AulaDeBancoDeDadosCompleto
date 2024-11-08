@@ -1,0 +1,90 @@
+1. Primeira Forma Normal (1NF)
+A Primeira Forma Normal exige que todos os atributos de uma tabela contenham apenas valores atômicos (indivisíveis) 
+e que cada entrada em uma coluna seja do mesmo tipo.
+
+Exemplo:
+
+Suponha que temos uma tabela Estudantes que armazena informações sobre alunos e suas disciplinas:
+
+ID_Estudante	Nome	Disciplinas
+1	            Ana	    Matemática,Física
+2	            João	Química
+3	            Maria	Matemática, Química
+
+Nesta tabela, a coluna Disciplinas não está em 1NF porque contém valores múltiplos. Para normalizar, 
+precisamos dividir as disciplinas em linhas separadas:
+
+ID_Estudante	Nome	Disciplina
+1	             Ana	Matemática
+1	             Ana	Física
+2	            João	Química
+3	           Maria	Matemática
+3	            Maria	Química
+
+2. Segunda Forma Normal (2NF)
+
+A Segunda Forma Normal exige que a tabela esteja em 1NF e que todos os atributos não-chave sejam totalmente 
+dependentes da chave primária. Isso significa que não pode haver dependências parciais.
+
+Exemplo:
+
+Vamos considerar a tabela Notas, que relaciona estudantes com suas disciplinas e notas:
+
+ID_Estudante	Disciplina	Nota	Nome
+1	            Matemática	8.5	    Ana
+1	            Física	    7.0	    Ana
+2	             Química	9.0	    João
+3	            Matemática	6.5	    Maria
+3	            Química	    8.0	    Maria
+
+Aqui, Nome depende apenas de ID_Estudante, não da combinação de ID_Estudante e Disciplina. 
+Para normalizar, podemos dividir a tabela em duas:
+
+Tabela Estudantes:
+
+ID_Estudante	Nome
+1	            Ana
+2	            João
+3	            Maria
+Tabela Notas:
+
+ID_Estudante	Disciplina	Nota
+1	            Matemática	8.5
+1	               Física	7.0
+2	             Química	9.0
+3	          Matemática	6.5
+3	             Química	8.0
+
+3. Terceira Forma Normal (3NF)
+A Terceira Forma Normal exige que a tabela esteja em 2NF e que não haja dependências transitivas. 
+Isso significa que os atributos não-chave não devem depender de outros atributos não-chave.
+
+Exemplo:
+
+Vamos considerar que a tabela Estudantes tem um campo adicional Curso e que o Curso tem um Coordenador:
+
+ID_Estudante	Nome	Curso	    Coordenador
+1	             Ana	Matemática	Prof. Silva
+2	             João	Química	    Prof. Santos
+3	             Maria	Matemática	Prof. Silva
+
+Aqui, Coordenador depende de Curso, não de ID_Estudante. Para normalizar, podemos criar uma nova tabela para Cursos:
+
+Tabela Estudantes:
+
+ID_Estudante	Nome	
+1	            Ana	    
+2	            João	
+3	            Maria	
+
+
+tabela composta Curso e Estudantes
+
+fk_estudante 
+fk_curso
+
+Tabela Cursos:
+
+id_curso    Curso	Coordenador
+ 1   Matemática	Prof. Silva
+ 2   Química	Prof. Santos

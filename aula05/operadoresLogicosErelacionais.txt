@@ -1,0 +1,62 @@
+
+Operadores Relacionais:
+Os operadores relacionais comparam valores e retornam um resultado booleano (verdadeiro ou falso). 
+Aqui estão os principais operadores relacionais no MySQL:
+
+= (igual a) 
+Exemplo: 
+SELECT * FROM funcionarios WHERE salario = 5000;
+
+
+> (maior que)
+Exemplo :
+SELECT * FROM funcionarios WHERE qtdFilhos > 2;
+
+
+< (menor que)
+Exemplo :
+SELECT * FROM funcionarios WHERE qtdFilhos < 2;
+
+
+>= (maior ou igual a)
+Exemplo:
+SELECT * FROM funcionarios WHERE qtdFilhos >= 2;
+
+<= (menor ou igual a)
+Exemplo:
+SELECT * FROM funcionarios WHERE qtdFilhos <= 2;
+
+<> ou != (diferente de)
+Exemplo :
+SELECT * FROM funcionarios WHERE salario <> 4800;
+
+
+Operadores Lógicos:
+Os operadores lógicos combinam expressões booleanas. Eles são frequentemente usados em 
+cláusulas WHERE para filtrar resultados. Aqui estão os principais operadores lógicos no MySQL:
+
+tabela verdade 
+
+V E V = V | V ou V = V | !V = F 
+V E F = F | V ou F = V | !F = V
+F E F = F |F ou F = F  |
+
+
+AND: Retorna verdadeiro se todas as condições forem verdadeiras.
+Exemplo:
+
+SELECT * FROM funcionarios WHERE salario > 5000 AND qtdFilhos >= 2;
+
+
+OR: Retorna verdadeiro se pelo menos uma das condições for verdadeira.
+Exemplo:
+
+SELECT * FROM funcionarios WHERE salario > 8000 OR datanascimento < '1980-01-01';
+
+
+NOT: Inverte o valor de uma expressão (torna verdadeiro falso e vice-versa).
+Exemplo:
+
+SELECT * FROM funcionarios WHERE NOT qtdFilhos < 0;
+
+

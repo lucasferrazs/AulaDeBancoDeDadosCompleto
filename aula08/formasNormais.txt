@@ -1,0 +1,138 @@
+Formas Normais
+
+As formas normais são um conjunto de regras que ajudam a garantir que os dados em um banco de dados sejam 
+armazenados de forma eficiente e consistente. Existem várias formas normais, mas as mais comuns são a 
+Primeira Forma Normal (1FN), a Segunda Forma Normal (2FN) e a Terceira Forma Normal (3FN).
+
+Primeira Forma Normal (1FN)
+
+A primeira forma normal se trata de atomicidade , ou seja , um campo não pode ser divisivel
+ou seja , eu não posso ter um campo multivalorado, e um campo não pode ser vetorizado
+e tambem precisa sempre de um chave primaria 
+
+Exemplo : 
+
+na tabela funcionarios não pode haver campos sobre o filho desse funcionario
+caso a gente quisesse adicionar informações sobre o filho , seria mais viavel criar uma tabela
+apenas para os filhos ex , veja a forma correta e a forma errada a seguir :
+
+Forma incorreta sem a correção da primeiro forma normal :
+
+create table funcionarios (
+	idfuncionarios int primary key auto_increment,
+	nome varchar(255),
+	telefone varchar(255),
+	datanascimento date ,
+	salario double ,
+	qtdFilhos int,
+	nomeDosFilhos varchar(255),
+	IdadeDosFilhos int 
+);
+
+Forma correta com a correção da primeira forma normal :
+
+CREATE TABLE Filhos (
+  idFilho INT PRIMARY KEY AUTO_INCREMENT,
+  nomeFilho VARCHAR(255),
+  dataNascimento DATE,
+  fkFuncionario INT,
+  FOREIGN KEY (fkFuncionario) REFERENCES Funcionarios(idFuncionarios)
+);
+
+
+
+
+Segunda Forma Normal (2FN)
+
+A Segunda Forma Normal (2FN) estabelece que cada não-chave dependa da chave primária. Isso significa 
+que cada não-chave deve ser dependente da chave primária e não de outra não-chave, algo parecido com a correção da primeira parte, 
+vamos ver a seguir
+
+Forma incorreta sem a correção da segunda forma normal :
+
+create table funcionarios (
+	idfuncionarios int primary key auto_increment,
+	nome varchar(255),
+	telefone varchar(255),
+	datanascimento date ,
+	salario double,
+	endereco varchar (255)  (objeto não chave que não depende de sua chave primaria)
+);
+
+CREATE TABLE Filhos (
+  idFilho INT PRIMARY KEY AUTO_INCREMENT,
+  nomeFilho VARCHAR(255),
+  dataNascimento DATE,
+  endereco varchar (255), 
+  fkFuncionario INT,
+  FOREIGN KEY (fkFuncionario) REFERENCES Funcionarios(idFuncionarios)
+);
+
+Forma correta 
+
+create table funcionarios (
+	idfuncionarios int primary key auto_increment,
+	nome varchar(255),
+	telefone varchar(255),
+	datanascimento date ,
+	salario double
+);
+
+create table endereco (
+	idendereco int primary key auto_increment,
+	nomeDaRua varchar(255),
+	numeroDaCasa int ,
+	nomeDoBairro varchar(255),  
+  fkFuncionario INT,
+  FOREIGN KEY (fkFuncionario) REFERENCES Funcionarios(idFuncionarios)
+);
+
+
+
+
+
+Terceira Forma Normal (3FN)
+
+A Terceira Forma Normal (3FN) estabelece que se uma tabela estiver na 2FN e uma não-chave 
+depender de outra não-chave, então a tabela não está na 3FN.
+
+Forma incorreto antes da correção
+
+create table funcionarios (
+idfuncionarios int primary key auto_increment,
+nome varchar(255),
+telefone varchar(255),
+datanascimento date ,
+salario double 
+);
+
+
+  CREATE TABLE Habilidades(
+    idHabilidade INT PRIMARY KEY AUTO_INCREMENT,
+    nomeHabilidade Varchar(255),
+	  fkFuncionario INT,
+    FOREIGN KEY (fkFuncionario) REFERENCES Funcionarios(idFuncionarios)
+  );
+
+Forma correta após a correção
+
+create table funcionarios (
+idfuncionarios int primary key auto_increment,
+nome varchar(255),
+telefone varchar(255),
+datanascimento date ,
+salario double 
+);
+
+
+  CREATE TABLE Habilidades(
+    idHabilidade INT PRIMARY KEY AUTO_INCREMENT,
+    nomeHabilidade Varchar(255)
+  );
+
+CREATE TABLE Habilidades_Funcionarios(
+  fkHabilidades int,
+  fkFuncionarios int,
+  FOREIGN KEY (fkHabilidades) REFERENCES Habilidades(idHabilidade),
+   FOREIGN KEY (fkFuncionarios) REFERENCES Funcionarios(idFuncionarios)
+);

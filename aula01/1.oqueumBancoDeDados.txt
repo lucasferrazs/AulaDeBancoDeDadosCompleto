@@ -1,0 +1,22 @@
+um banco de dados é uma forma de Armazenamento para as infromações de um sistema 
+com ele nós conseguimos:
+
+Coleta e Armazenamento: Os bancos de dados são como grandes armários virtuais, 
+onde podemos guardar diferentes tipos de dados. Eles podem conter informações 
+sobre clientes, produtos, transações, registros históricos e muito mais.
+
+Estruturação: Os dados dentro de um banco de dados são organizados em formatos específicos, 
+como tabelas. Essa estrutura facilita a busca e a recuperação das informações quando precisamos delas.
+
+Recuperação Eficiente: Imagine que você está procurando o histórico de compras de um cliente específico.
+Com um banco de dados bem projetado, essa busca é rápida e precisa, mesmo que haja milhares de registros.
+
+Sistema de Gerenciamento de Banco de Dados (DBMS): O DBMS é o cérebro por trás do banco de dados. Ele 
+gerencia como os dados são armazenados, acessados e manipulados. Existem vários sistemas populares, como MySQL, 
+PostgreSQL e Microsoft SQL Server.
+
+Aplicações: Bancos de dados são usados em muitos contextos, desde sistemas internos de empresas até redes 
+sociais e aplicativos móveis. Eles são essenciais para tomar decisões informadas, identificar tendências, 
+automatizar processos e melhorar a eficiência operacional.
+
+

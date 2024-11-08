@@ -1,0 +1,49 @@
+1. INNER JOIN
+O INNER JOIN é utilizado para retornar apenas as linhas que têm correspondência em ambas as 
+tabelas envolvidas na junção. Se não houver correspondência, as linhas não são incluídas no resultado.
+
+
+SELECT f.nome AS NomeFuncionario, fi.nomeFilho AS NomeFilho
+FROM funcionarios f
+INNER JOIN Filhos fi ON f.idfuncionarios = fi.fkFuncionario;
+
+
+
+2. LEFT JOIN
+O LEFT JOIN retorna todas as linhas da tabela à esquerda (neste caso, funcionarios), e as linhas correspondentes 
+da tabela à direita (Filhos). Se não houver correspondência, o resultado incluirá NULL para as colunas da tabela à direita.
+
+SELECT f.nome AS NomeFuncionario, fi.nomeFilho AS NomeFilho
+FROM funcionarios f
+LEFT JOIN Filhos fi ON f.idfuncionarios = fi.fkFuncionario;
+
+
+insert into funcionarios values(null,'lucas','12-34567891','1999-12-20',5000);
+
+
+
+
+3. RIGHT JOIN
+O RIGHT JOIN é o oposto do LEFT JOIN. Ele retorna todas as linhas da tabela à direita e as linhas 
+correspondentes da tabela à esquerda. Se não houver correspondência, o resultado incluirá NULL 
+para as colunas da tabela à esquerda.
+
+
+SELECT f.nome AS NomeFuncionario, fi.nomeFilho AS NomeFilho
+FROM funcionarios f
+RIGHT JOIN Filhos fi ON f.idfuncionarios = fi.fkFuncionario;
+
+
+insert into filhos values(null,'paulo','2024-12-20',null);
+
+
+
+4. UNION
+O UNION é utilizado para combinar os resultados de duas ou mais consultas SELECT. 
+As consultas devem ter o mesmo número de colunas e tipos de dados compatíveis. 
+O UNION elimina duplicatas por padrão.
+
+
+SELECT nome FROM funcionarios
+UNION
+SELECT nomeHabilidade FROM Habilidades;

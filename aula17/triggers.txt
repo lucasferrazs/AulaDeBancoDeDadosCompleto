@@ -1,0 +1,151 @@
+O que são Triggers?
+
+Triggers são procedimentos que são executados automaticamente em resposta a 
+eventos específicos em uma tabela, como INSERT, UPDATE ou DELETE. Eles são úteis 
+para manter a integridade dos dados e automatizar tarefas.
+
+Momentos de Execução
+BEFORE: Executa antes do evento
+
+AFTER: Executa depois do evento
+
+Eventos que podem disparar um Trigger
+
+INSERT
+UPDATE
+DELETE
+
+
+Sintaxe Básica
+
+DELIMITER //
+
+CREATE TRIGGER nome_do_trigger
+{BEFORE | AFTER} {INSERT | UPDATE | DELETE}
+ON nome_da_tabela
+FOR EACH ROW
+BEGIN
+    -- Código do trigger
+END //
+
+DELIMITER ;
+
+
+
+
+Exemplo de um banco de dados com trigger
+
+
+create database teste ;
+use teste;
+drop database teste;
+
+
+CREATE TABLE conta (
+  idconta int(11) primary key auto_increment,
+  tipoConta enum('carteira','contaCorrente','contaPoupanca','instituicaoFinaceira') DEFAULT NULL,
+  saldo double(10,2) DEFAULT NULL
+);
+select * from conta ;
+
+insert into conta values(null, 'carteira', 0);
+
+
+CREATE TABLE despesa (
+  iddespesa int(11) primary key auto_increment,
+  valor double(10,2) DEFAULT NULL,
+  dataPagamento date DEFAULT NULL,
+  dataPagamentoEsperado date DEFAULT NULL,
+  tipoDespesa enum('alimentacao','educacao','lazer','moradia','roupa','saude','transporte','outros') DEFAULT NULL,
+  fk_conta int(11) ,
+  foreign key (fk_conta)
+  references conta (idconta)
+);
+
+insert into despesa values(null, 1000,'2023-12-30','2023-12-30','moradia',1);
+
+CREATE TABLE receita (
+  idreceita int(11) primary key auto_increment,
+  valor double(10,2) DEFAULT NULL,
+  dataRecebimento date DEFAULT NULL,
+  dataRecebimentoEsperado date DEFAULT NULL,
+  descricao varchar(300) DEFAULT NULL,
+  tipoReceita enum('salario','presente','premio','outros') DEFAULT NULL,
+  fk_conta int(11) DEFAULT NULL,
+  foreign key (fk_conta)
+  references conta (idconta)
+);
+
+insert into receita values(null, 2000,'2023-12-30','2023-12-30',"salario que veio da empresa",'salario',1);
+
+CREATE TABLE transferencia (
+  valorTranferencia double DEFAULT NULL,
+  fk_conta_envia int(11) DEFAULT NULL,
+  foreign key (fk_conta_envia)
+  references conta (idconta),
+  fk_conta_recebe int(11) DEFAULT NULL,
+  foreign key (fk_conta_recebe)
+  references conta (idconta)
+); 
+
+insert into transferencia values(500,1,2);
+
+
+DELIMITER $$
+CREATE TRIGGER `ADICIONA_SALDO` AFTER INSERT ON `RECEITA` FOR EACH ROW BEGIN
+	
+	
+	UPDATE conta SET saldo = saldo + new.valor WHERE idconta = new.fk_conta;
+	
+end
+$$
+DELIMITER ;
+
+
+DELIMITER $$
+CREATE TRIGGER `REMOVE_SALDO` AFTER INSERT ON `DESPESA` FOR EACH ROW BEGIN
+	DECLARE SALDOCONTA REAL;
+	SELECT saldo INTO SALDOCONTA
+    FROM conta
+    WHERE idconta = NEW.fk_conta;
+	
+    IF SALDOCONTA - NEW.valor < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Saldo insuficiente para realizar a transferência';
+    ELSE
+
+	UPDATE conta SET saldo = saldo - new.valor WHERE idconta = new.fk_conta;
+	end if;
+end
+$$
+DELIMITER ;
+
+
+drop trigger TRI_TRANSFERENCIA;
+DELIMITER $$
+CREATE TRIGGER `TRI_TRANSFERENCIA` AFTER INSERT ON `TRANSFERENCIA` FOR EACH ROW BEGIN
+    DECLARE SALDOCONTA REAL;
+	
+    SELECT saldo INTO SALDOCONTA
+    FROM conta
+    WHERE idconta = NEW.fk_conta_envia;
+	
+    IF SALDOCONTA - NEW.valorTranferencia < 0 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Saldo insuficiente para realizar a transferência';
+    ELSE
+        
+        UPDATE conta SET saldo = saldo - NEW.valorTranferencia WHERE idconta = NEW.fk_conta_envia;
+
+        UPDATE conta SET saldo = saldo + NEW.valorTranferencia WHERE idconta = new.fk_conta_recebe;
+
+    END IF;
+
+end
+$$
+DELIMITER ;
+
+
+
+
+

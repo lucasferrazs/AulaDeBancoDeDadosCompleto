@@ -1,0 +1,26 @@
+DDL (Data Definition Language)
+
+Os comandos DDL são usados para definir e modificar a estrutura de um banco de dados. Eles permitem que você crie, 
+altere e exclua tabelas, índices, vistas e outros objetos de banco de dados. Os principais comandos DDL são:
+
+CREATE: cria um novo objeto de banco de dados, como uma tabela ou índice.
+ALTER: altera a estrutura de um objeto de banco de dados existente.
+DROP: exclui um objeto de banco de dados.
+TRUNCATE: exclui todos os dados de uma tabela e redefine a estrutura da tabela.
+
+DML (Data Manipulation Language)
+Os comandos DML são usados para manipular os dados armazenados em um banco de dados. Eles permitem que 
+você insira, atualize, exclua e recupere dados. Os principais comandos DML são:
+
+INSERT: insere novos dados em uma tabela.
+UPDATE: atualiza dados existentes em uma tabela.
+DELETE: exclui dados de uma tabela.
+SELECT: recupera dados de uma tabela.
+
+DCL (Data Control Language)
+Os comandos DCL são usados para controlar o acesso a um banco de dados. Eles permitem que você 
+conceda ou revogue permissões de acesso a usuários e grupos. Os principais comandos DCL são:
+
+GRANT: concede permissões de acesso a um usuário ou grupo.
+REVOKE: revoga permissões de acesso de um usuário ou grupo.
+

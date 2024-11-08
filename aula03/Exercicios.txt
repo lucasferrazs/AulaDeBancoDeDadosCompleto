@@ -1,0 +1,24 @@
+1. Inserir Dados (INSERT)
+Exercício 1: Insira um novo funcionário chamado "Carlos Silva", com telefone "1234-5678", 
+data de nascimento "1990-05-15", salário de 3500.00 e quantidade de filhos igual a 2.
+
+Exercício 2: Insira um novo funcionário chamado "Maria Oliveira", com telefone "9876-5432", data de nascimento 
+"1985-10-20", salário de 4200.00 e quantidade de filhos igual a 1.
+
+
+2. Selecionar Dados (SELECT)
+Exercício 3: Selecione todos os dados da tabela funcionarios.
+
+Exercício 4: Selecione apenas os nomes e salários de todos os funcionários.
+
+
+3. Atualizar Dados (UPDATE)
+Exercício 6: Atualize o telefone de "Carlos Silva" para "4321-8765".
+
+Exercício 7: Aumente o salário de "Maria Oliveira" em 10%.
+
+
+4. Deletar Dados (DELETE)
+Exercício 8: Delete o funcionário "Carlos Silva" da tabela.
+
+Exercício 9: Delete todos os funcionários que têm 0 filhos.
